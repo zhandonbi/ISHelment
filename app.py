@@ -17,7 +17,7 @@ def FUID():
         return user.find_user_by_id(id)
 
 
-@app.route('/find_user_byName', methods=['POST'])
+@app.route('/find_user_byName/', methods=['POST'])
 def FUN():
     if request.method == 'POST':
         user_name = request.form.get('user_name')

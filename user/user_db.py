@@ -111,6 +111,7 @@ class User(object):
     def find_user_by_name(self, userName):
         sql = 'SELECT * FROM {} WHERE `name` = \'{}\''.format(
             self.tableUser, userName)
+        print(sql)
         try:
             self.cur.execute(sql)
             res = self.cur.fetchall()
