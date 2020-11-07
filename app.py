@@ -27,16 +27,16 @@ def FUN():
 @app.route('/add_user/', methods=['POST'])
 def AU():
     if request.method == 'POST':
-        user_name = request.get('user_name')
-        user_age = request.get('user_age')
-        user_device = request.get('user_device')
+        user_name = request.form.get('user_name')
+        user_age = request.form.get('user_age')
+        user_device = request.form.get('user_device')
         return user.add_user(user_name, user_age, user_device)
 
 
 @app.route('/del_user/', methods=['POST'])
 def DU():
     if request.method == 'POST':
-        user_id = request.get('user_id')
+        user_id = request.form.get('user_id')
         return user.del_user(user_id)
 
 
