@@ -69,7 +69,7 @@ class User(object):
 
     def edit_user(self, userID, newMessage):
         if self.check_userID(userID) is None:
-            self.returnValue(False, '人员不存在')
+            return self.returnValue(False, '人员不存在')
         else:
             setV = ''
             for key, value in newMessage.items():
@@ -78,7 +78,7 @@ class User(object):
             sql = 'UPDATE {} SET {} WHERE workID = {}'.format()
             try:
                 self.cur.execute(sql)
-                return self.returnValue(True, '人员{}删除完成'.format(userID))
+                return self.returnValue(True, '人员{}更新完成'.format(userID))
             except Exception as e:
                 return self.returnValue(False, str(e))
 
