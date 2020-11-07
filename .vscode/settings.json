@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/root/anaconda3/envs/PythonServer/bin/python",
+    "python.dataScience.jupyterServerURI": "https://localhost:8081/",
+    "python.formatting.provider": "yapf"
+}
