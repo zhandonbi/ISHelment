@@ -75,7 +75,7 @@ class User(object):
             for key, value in newMessage.items():
                 if value != None:
                     setV.append('`{}`={}'.format(key, value))
-                setV = ','.join(setV)
+            setV = ','.join(setV)
             sql = 'UPDATE {} SET {} WHERE workID = {}'.format(
                 self.tableUser, setV, userID)
             try:
