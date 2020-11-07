@@ -40,5 +40,23 @@ def DU():
         return user.del_user(user_id)
 
 
+@app.route('/edit_user/', methods=['POST'])
+def EU():
+    if request.method == 'POST':
+        user_id = request.form.get('user_id')
+        print(request.form)
+        message = {
+            "name" : request.form.get('user_name'),
+            "age" : request.form.get('user_age'),
+            "linkNumber" : request.form.get('user_device'),
+            "workFinish" : request.form.get('finsh_count', type=int),
+            "workCount" : request.form.get('all_count',type=int)
+        }
+        print(message)
+        if message['workFinish']>message['workCount']:
+            return user.returnValue(False,'总工作数目低于限定值')
+        return user.edit_user(user_id,message)
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8082)
+    app.run(host='0.0.0.0', port=11331)

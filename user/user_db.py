@@ -67,13 +67,14 @@ class User(object):
                 return self.returnValue(False, str(e))
             return self.returnValue(True, '已删除{}'.format(userID))
 
-    def edit_user(self, userID, newMessage: dict):
+    def edit_user(self, userID, newMessage):
         if self.check_userID(userID) is None:
             self.returnValue(False, '人员不存在')
         else:
             setV = ''
             for key, value in newMessage.items():
-                setV += '{}={},'.format(key, value)
+                if value!=None:
+                    setV += '{}={},'.format(key, value)
             sql = 'UPDATE {} SET {} WHERE workID = {}'.format()
             try:
                 self.cur.execute(sql)
