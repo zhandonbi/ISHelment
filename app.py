@@ -24,7 +24,7 @@ def FUN():
         return user.find_user_by_name(user_name)
 
 
-@app.route('/add_user/')
+@app.route('/add_user/', methods=['POST'])
 def AU():
     if request.method == 'POST':
         user_name = request.get('user_name')
@@ -33,7 +33,7 @@ def AU():
         return user.add_user(user_name, user_age, user_device)
 
 
-@app.route('/del_user/')
+@app.route('/del_user/', methods=['POST'])
 def DU():
     if request.method == 'POST':
         user_id = request.get('user_id')
