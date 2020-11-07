@@ -102,7 +102,7 @@ class User(object):
             self.cur.execute(sql)
             res = self.cur.fetchall()
             if len(res) != 0:
-                return self.returnValue(True, self.toDir(list(res[0])))
+                return self.returnValue(True, self.to_dir(list(res[0])))
             else:
                 return self.returnValue(False, '用户不存在')
         except Exception as e:
@@ -117,7 +117,7 @@ class User(object):
             if len(res) != 0:
                 final_res = []
                 for now_line in res:
-                    final_res.append(self.toDir(list(now_line)))
+                    final_res.append(self.to_dir(list(now_line)))
                 return self.returnValue(True, final_res)
             else:
                 return self.returnValue(False, '用户不存在')
