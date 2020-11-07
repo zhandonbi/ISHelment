@@ -75,6 +75,7 @@ class User(object):
             for key, value in newMessage.items():
                 if value!=None:
                     setV += '{}={},'.format(key, value)
+                setV[-1] = ''
             sql = 'UPDATE {} SET {} WHERE workID = {}'.format(self.tableUser,setV,userID)
             try:
                 self.cur.execute(sql)
