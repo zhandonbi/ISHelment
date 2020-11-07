@@ -71,29 +71,25 @@ class User(object):
         if self.check_userID(userID) is None:
             return self.returnValue(False, '人员不存在')
         else:
-            setV = ''
+            setV = []
             for key, value in newMessage.items():
-                if value!=None:
-                    setV += '{}={},'.format(key, value)
-                setV[-1] = ''
-            sql = 'UPDATE {} SET {} WHERE workID = {}'.format(self.tableUser,setV,userID)
+                if value != None:
+                    setV.append('`{}`={}'.format(key, value))
+                setV = ','.join(setV)
+            sql = 'UPDATE {} SET {} WHERE workID = {}'.format(
+                self.tableUser, setV, userID)
             try:
                 self.cur.execute(sql)
                 return self.returnValue(True, '人员{}更新完成'.format(userID))
             except Exception as e:
                 return self.returnValue(False, str(e))
 
-    def to_dir(self,message):
+    def to_dir(self, message):
         res = {}
         field = [
-            'userID',
-            'name',
-            'age',
-            'deviceID',
-            'workFinish',
-            'workCount'
+            'userID', 'name', 'age', 'deviceID', 'workFinish', 'workCount'
         ]
-        for f,v in zip(field,message):
+        for f, v in zip(field, message):
             res[f] = v
         return res
 
