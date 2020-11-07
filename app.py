@@ -12,7 +12,7 @@ def hello_world():
 
 @app.route('/find_user_byID/', methods=['POST'])
 def FUID():
-    if request.method is 'POST':
+    if request.method == 'POST':
         id = request.form.get()('user_id')
         return user.find_user_by_id(id)
 
