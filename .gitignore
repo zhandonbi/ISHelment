@@ -1,3 +1,5 @@
 cfg/*
 dbOperator/__pycache__
 user/__pycache__
+uwsgi/*
+uwsgi.ini
