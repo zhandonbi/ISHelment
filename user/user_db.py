@@ -76,7 +76,8 @@ class User(object):
                 if value != None:
                     setV.append('`{}`={}'.format(key, value))
             setV = ','.join(setV)
-            sql = 'UPDATE {} SET {} WHERE workID = {}'.format(
+            print(setV)
+            sql = 'UPDATE {} SET {} WHERE `workID` = {}'.format(
                 self.tableUser, setV, userID)
             try:
                 self.cur.execute(sql)
