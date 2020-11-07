@@ -81,7 +81,7 @@ class User(object):
             except Exception as e:
                 return self.returnValue(False, str(e))
 
-    def to_dir(message):
+    def to_dir(self,message):
         res = {}
         field = [
             'userID',
