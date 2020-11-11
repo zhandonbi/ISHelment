@@ -4,10 +4,10 @@ from functools import wraps
 
 class User(object):
     def __init__(self):
-        cfgPath = './cfg/linkDB.json'
-        dbOP = Load(cfgPath)
-        self.cur = dbOP.cur
-        self.operator = dbOP.DB_operator
+        self.cfgPath = './cfg/linkDB.json'
+        self.dbOP = Load(self.cfgPath)
+        self.cur = self.dbOP.cur
+        self.operator = self.dbOP.DB_operator
         self.tableUser = 'user'
 
     def returnValue(self, status: bool, message):
@@ -123,3 +123,6 @@ class User(object):
                 return self.returnValue(False, '用户不存在')
         except Exception as e:
             return self.returnValue(False, str(e))
+
+    def reLink(self):
+        self.dbOP = Load(self.cfgPath)

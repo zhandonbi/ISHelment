@@ -1,13 +1,26 @@
-from flask import Flask, request
+from flask import Flask, request,render_template
+from flask_socketio import SocketIO, emit, send
+from werkzeug import debug
 from user.user_db import User
+from threading import Lock
 
 app = Flask(__name__)
+
+
+thread_lock = Lock()
+thread = None
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 user = User()
+
+@app.before_first_request
+def before_first_request():
+    user.reLink()
 
 
 @app.route('/')
 def hello_world():
-    return {'status': True, 'message': 'link success'}
+    return render_template('/HW1017_2.html')
 
 
 @app.route('/find_user_byID/', methods=['POST'])
@@ -57,5 +70,21 @@ def EU():
         return user.edit_user(user_id, message)
 
 
+@app.route('/upload_data/',methods=['POST'])
+def UD():
+    pass
+
+@socketio.on('device_link',namespace='')
+def dlu(deviceID):
+    print('to device at {}'.format(deviceID))
+
+@socketio.on('connect',namespace='/device')
+def handle_my_custom_event():
+    socketio.emit('manager', )
+
+@socketio.on('disconnect',namespace='/device')
+def dsc():
+    print('disconnect')
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=11331)
+    socketio.run(app=app,host='0.0.0.0',port=11331,debug=True)
