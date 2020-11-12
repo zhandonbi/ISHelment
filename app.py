@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+from flask.helpers import flash
 from flask_socketio import SocketIO, emit, send
 from werkzeug import debug
 from user.user_db import User
@@ -7,8 +8,6 @@ import random
 
 app = Flask(__name__)
 
-thread_lock = Lock()
-thread = None
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
@@ -72,17 +71,23 @@ def EU():
 
 @app.route('/upload_data/', methods=['POST'])
 def UD():
-    pass
+    if request.method == 'POST':
+        print(request.args)
+        return str(request.args)
 
 
 @socketio.on('/device_link', namespace='')
 def dlu(deviceID):
     print('to device at {}'.format(deviceID))
 
+@socketio.on('connect')
+def test_connect():
+    emit('my response', {'data': 'Connected'})
+
 
 @socketio.on('connect', namespace='/manager2')
 def handle_my_custom_event2():
-    print('yes')
+    socketio.send('hello',namespace='/manager2')
 
 
 @socketio.on('connect', namespace='/manager')
@@ -106,5 +111,4 @@ def dsc():
 if __name__ == '__main__':
     socketio.run(app=app,
                  host='0.0.0.0',
-                 port=11331,
-                 debug=True)
+                 port=11331)
