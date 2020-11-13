@@ -72,8 +72,20 @@ def EU():
 @app.route('/upload_data/', methods=['POST'])
 def UD():
     if request.method == 'POST':
-        print(request.args)
-        return str(request.args)
+        wsd = str(request.args.get('WSD')).split(';')
+        jsd = str(request.args.get('JSD')).split(';')
+        yw = request.args.get('YW')
+        res = {
+            'temp':wsd[0],
+            'humi':wsd[1],
+            'jsd_x':jsd[0],
+            'jsd_y':jsd[1],
+            'jsd_z':jsd[2],
+            'yw':yw
+        }
+        print(request.form)
+        socketio.send(res,True,namespace='/manager')
+        return list(request.args)
 
 
 @socketio.on('/device_link', namespace='')
@@ -92,15 +104,7 @@ def handle_my_custom_event2():
 
 @socketio.on('connect', namespace='/manager')
 def handle_my_custom_event():
-    data = {
-        'temp': random.randint(0, 100),
-        'humi': random.randint(0, 100),
-        'yw': False,
-        'jsd': '$'.join(random.sample(range(0, 900), 3))
-    }
-    while True:
-        socketio.sleep(5)
-        socketio.send(data, True, '/manager')
+        socketio.send('success',False,'/manager')
 
 
 @socketio.on('disconnect', namespace='/device')
