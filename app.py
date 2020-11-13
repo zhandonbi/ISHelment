@@ -85,7 +85,7 @@ def UD():
         }
         print(request.form)
         socketio.send(res,True,namespace='/manager')
-        return list(request.args)
+        return str(list(request.form))
 
 
 @socketio.on('/device_link', namespace='')
