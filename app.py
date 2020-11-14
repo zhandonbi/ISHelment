@@ -85,7 +85,7 @@ def UD():
             }
         }
         print(request.form)
-        socketio.emit('ToDevice', res, namespace='/manager')
+        socketio.emit('ToDevice', res,JSON=True, namespace='/manager')
         return str(list(request.form))
 
 
