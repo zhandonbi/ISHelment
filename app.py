@@ -1,15 +1,12 @@
 from flask import Flask, request, render_template
-from flask.helpers import flash
 from flask_socketio import SocketIO, emit, send
 from werkzeug import debug
 from user.user_db import User
-from threading import Lock
 import random
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 
 @app.route('/')
@@ -72,47 +69,32 @@ def EU():
 @app.route('/upload_data/', methods=['POST'])
 def UD():
     if request.method == 'POST':
+        deviceID = str(request.args.get('ID'))
         wsd = str(request.args.get('WSD')).split(';')
         jsd = str(request.args.get('JSD')).split(';')
         yw = request.args.get('YW')
         res = {
-            'temp':wsd[0],
-            'humi':wsd[1],
-            'jsd_x':jsd[0],
-            'jsd_y':jsd[1],
-            'jsd_z':jsd[2],
-            'yw':yw
+            'deviceID':deviceID,
+            "data":{
+                'temp': wsd[0],
+                'humi': wsd[1],
+                'jsd_x': jsd[0],
+                'jsd_y': jsd[1],
+                'jsd_z': jsd[2],
+                'yw': yw
+            }
         }
         print(request.form)
-        socketio.send(res,True,namespace='/manager')
+        socketio.emit('ToDevice', res, namespace='/manager')
         return str(list(request.form))
 
 
-@socketio.on('/device_link', namespace='')
-def dlu(deviceID):
-    print('to device at {}'.format(deviceID))
-
-@socketio.on('connect')
-def test_connect():
-    emit('my response', {'data': 'Connected'})
-
-
-@socketio.on('connect', namespace='/manager2')
-def handle_my_custom_event2():
-    socketio.send('hello',namespace='/manager2')
-
-
-@socketio.on('connect', namespace='/manager')
-def handle_my_custom_event():
-        socketio.send('success',False,'/manager')
-
-
-@socketio.on('disconnect', namespace='/device')
-def dsc():
-    print('disconnect')
+@socketio.on('ToServer', '/manager')
+def devMess(data):
+        socketio.emit('ToDevice', {"status": True},
+                      namespace='/manager')
 
 
 if __name__ == '__main__':
-    socketio.run(app=app,
-                 host='0.0.0.0',
-                 port=11331)
+    # app.run(host='0.0.0.0', port=11331)
+    socketio.run(app, host='0.0.0.0', port=11331)
