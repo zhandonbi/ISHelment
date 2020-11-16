@@ -73,6 +73,7 @@ def UD():
         wsd = str(request.args.get('WSD')).split(';')
         jsd = str(request.args.get('JSD')).split(';')
         yw = request.args.get('YW')
+        pos = str(request.args.get('POS')).split(';')
         res = {
             'deviceID':deviceID,
             "data":{
@@ -80,8 +81,10 @@ def UD():
                 'humi': wsd[1],
                 'jsd_x': jsd[0],
                 'jsd_y': jsd[1],
-                'jsd_z': jsd[2],
-                'yw': yw
+                'yw': yw,
+                'POS_NS':pos[0],
+                'POS_EW':pos[1],
+                'POS_H':pos[2]
             }
         }
         print(request.form)
