@@ -69,6 +69,7 @@ def EU():
 @app.route('/upload_data/', methods=['POST'])
 def UD():
     if request.method == 'POST':
+        print(request.form)
         deviceID = str(request.args.get('ID'))
         wsd = str(request.args.get('WSD')).split(';')
         jsd = str(request.args.get('JSD')).split(';')
@@ -87,7 +88,6 @@ def UD():
                 'POS_H':pos[2]
             }
         }
-        print(request.form)
         socketio.emit('ToDevice', res,JSON=True, namespace='/manager')
         return str(list(request.form))
 
