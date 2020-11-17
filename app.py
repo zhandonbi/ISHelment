@@ -70,11 +70,11 @@ def EU():
 def UD():
     if request.method == 'POST':
         print(request.form)
-        deviceID = str(request.args.get('ID'))
-        wsd = str(request.args.get('WSD')).split(';')
-        jsd = str(request.args.get('JSD')).split(';')
-        yw = request.args.get('YW')
-        pos = str(request.args.get('POS')).split(';')
+        deviceID = str(request.form.get('ID'))
+        wsd = str(request.form.get('WSD')).split(';')
+        jsd = str(request.form.get('JSD')).split(';')
+        yw = request.form.get('YW')
+        pos = str(request.form.get('POS')).split(';')
         res = {
             'deviceID':deviceID,
             "data":{
