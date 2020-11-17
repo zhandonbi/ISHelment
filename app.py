@@ -74,7 +74,9 @@ def UD():
         wsd = str(request.form.get('WSD')).split(';')
         jsd = str(request.form.get('JSD')).split(';')
         yw = request.form.get('YW')
-        pos = str(request.form.get('POS')).split(';')
+        pos_NS = str(request.form.get('NS'))
+        pos_WE = str(request.form.get('WE'))
+        pos_HIGH=str(request.from.get('HIGH'))
         res = {
             'deviceID':deviceID,
             "data":{
@@ -83,9 +85,9 @@ def UD():
                 'jsd_x': jsd[0],
                 'jsd_y': jsd[1],
                 'yw': yw,
-                'POS_NS':pos[0],
-                'POS_EW':pos[1],
-                'POS_H':pos[2]
+                'POS_NS':pos_NS,
+                'POS_EW':pos_WE,
+                'POS_H':pos_HIGH
             }
         }
         socketio.emit('ToDevice', res,JSON=True, namespace='/manager')
