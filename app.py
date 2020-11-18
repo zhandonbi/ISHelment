@@ -76,7 +76,7 @@ def UD():
         yw = request.form.get('YW')
         pos_NS = str(request.form.get('NS'))
         pos_WE = str(request.form.get('WE'))
-        pos_HIGH=str(request.from.get('HIGH'))
+        pos_HIGH=str(request.form.get('HIGH'))
         res = {
             'deviceID':deviceID,
             "data":{
