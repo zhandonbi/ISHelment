@@ -1,5 +1,3 @@
-from user.user_db import User
+from envListen.predicet import *
 
-user = User()
-
-print(user.find_user_by_name('zdb'))
+train_fun()

@@ -3,6 +3,9 @@ from flask_socketio import SocketIO, emit, send
 from werkzeug import debug
 from user.user_db import User
 import random
+import hashlib
+from envListen.dataOp import envdata
+from envListen.predicet import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -69,7 +72,6 @@ def EU():
 @app.route('/upload_data/', methods=['POST'])
 def UD():
     if request.method == 'POST':
-        print(request.form)
         deviceID = str(request.form.get('ID'))
         wsd = str(request.form.get('WSD')).split(';')
         jsd = str(request.form.get('JSD')).split(';')
@@ -77,21 +79,47 @@ def UD():
         pos_NS = str(request.form.get('NS'))
         pos_WE = str(request.form.get('WE'))
         pos_HIGH=str(request.form.get('HIGH'))
+        m = hashlib.md5()
+        id = str(request.form).encode(encoding='utf-8')
+        m.update(id)
+        id = m.hexdigest()
         res = {
             'deviceID':deviceID,
             "data":{
-                'temp': wsd[0],
-                'humi': wsd[1],
-                'jsd_x': jsd[0],
-                'jsd_y': jsd[1],
-                'yw': yw,
+                'id':id,
+                'temp': float(wsd[0]),
+                'humi': float(wsd[1]),
+                'jsd_x':  float( jsd[0]),
+                'jsd_y': float(jsd[1]),
+                'yw': int(yw),
                 'POS_NS':pos_NS,
                 'POS_EW':pos_WE,
-                'POS_H':pos_HIGH
+                'POS_H':float(pos_HIGH),
             }
         }
+        data = res['data']
+        predict_data = [
+            data['id'],
+            data['temp'],
+            data['humi'],
+            data['yw'],
+            data['jsd_x'],
+            data['jsd_y'],
+            data['POS_H']
+        ]
+        res['data']['predict'] = predict_fun(predict_data[1:])
         socketio.emit('ToDevice', res,JSON=True, namespace='/manager')
-        return str(list(request.form))
+        print(predict_data)
+        envdata().add_data(predict_data);
+        return res
+
+
+@app.route('/target_date/',methods=['POST'])
+def target_date():
+    if request.method == 'POST':
+        ed = envdata();
+        data_id = request.form.get('id')
+        return ed.set_danger(data_id)
 
 
 @socketio.on('ToServer', '/manager')
