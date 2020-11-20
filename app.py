@@ -109,7 +109,7 @@ def UD():
         ]
         res['data']['predict'] = predict_fun(predict_data[1:])
         socketio.emit('ToDevice', res,JSON=True, namespace='/manager')
-        print(predict_data)
+        print(request.form)
         envdata().add_data(predict_data);
         return res
 
