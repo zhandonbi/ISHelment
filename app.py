@@ -119,6 +119,7 @@ def target_date():
     if request.method == 'POST':
         ed = envdata();
         data_id = request.form.get('id')
+        print(data_id)
         return ed.set_danger(data_id)
 
 
